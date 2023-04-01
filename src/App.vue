@@ -32,7 +32,7 @@
 
 						<!-- Стоимость заказа -->
 						<div class="cart-total">
-							<p v-if="this.finalPrice >= 1500"><span class="h5">Доставка:</span> <span class="delivery-cost free">бесплатно</span> </p>
+							<p v-if="this.finalPrice >= 1000"><span class="h5">Доставка:</span> <span class="delivery-cost free">бесплатно</span> </p>
 							<p><span class="h5">Итого:</span> <span class="total-price">{{finalPrice}}</span> <span class="rouble">₽</span></p>
 						</div>
 						<!-- // Стоимость заказа -->
@@ -40,7 +40,7 @@
 					</div>
 
 					<!-- Оформить заказ -->
-					<div id="order-form" class="card-body border-top">
+					<div v-if="this.basket.length > 0" id="order-form" class="card-body border-top">
 						<h4 class="card-title">Оформить заказ</h4>
 						<form>
 							<div class="form-group">
@@ -49,6 +49,7 @@
 							<button type="submit" class="btn btn-primary">Заказать</button>
 						</form>
 					</div>
+
 					<!-- // Оформить заказ -->
 
 				</div>
@@ -71,6 +72,7 @@ export default {
   components: {
     vHeader, vCard, vBasket
   },
+
   data(){
     return {
       productCards: [
@@ -81,7 +83,6 @@ export default {
       ],
 
       basket: [],
-
       finalPrice: 0,
     }
   },
@@ -93,27 +94,16 @@ export default {
 
       let cardInBasket = this.basket.find(el => el.id === objForBasket.id)
       if(cardInBasket) {
-        this.basket.forEach((el) => {
-          if(el.id == objForBasket.id) {
-            el.count += objForBasket.count
-          }
-        })
-      } 
-    	else {
+        this.basket.forEach(el => el.id == objForBasket.id ? el.count += objForBasket.count : false )
+      } else {
       	this.basket.push(objForBasket)
       }
     },
 
     priceCalc(price, sign){
-      if (sign == '+') { 
-          this.finalPrice += parseInt(price) 
-      } else { 
-        this.finalPrice -= price 
-      }
-    },
-
+      sign == '+' ?  this.finalPrice += parseInt(price) : this.finalPrice -= price 
+    }
   }
-  
 }
 </script>
 

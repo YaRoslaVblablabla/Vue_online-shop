@@ -1,5 +1,5 @@
 <template>
-    <div v-for="card in productCards" :key='card.id' class="col-md-6">
+    <div v-for="card in productCards" :key='card.id' class="col-md-6" >
 		<div class="card mb-4" data-id="{{ card.id }}">
 	        <img class="product-img" :src="card.img" alt="">
 				<div class="card-body text-center">
@@ -13,8 +13,8 @@
 							</div>
 
 					<div class="price">
-								<div class="price__weight">{{ card.weight }}г.</div>
-								<div class="price__currency">{{ card.price }} ₽</div>
+						<div class="price__weight">{{ card.weight }}г.</div>
+						<div class="price__currency">{{ card.price }} ₽</div>
 				    </div>
 				</div>
 				<button @click='addInBasket(card.id)' data-cart type="button" class="btn btn-block btn-outline-warning">+ в корзину</button>							
@@ -37,36 +37,23 @@ export default {
 
 	methods: {
 		increaseCounter(cardID){
-			this.productCards.forEach((el) => {
-				if(el.id == cardID ){ 
-					el.count += 1
-				}
+			this.productCards.forEach(el => {
+				el.id == cardID ? el.count += 1	: false
 			})
     	},
 
 		reduceCounter(cardID){
-			this.productCards.forEach((el) => {
-				if(el.id == cardID && el.count > 1){ 
-					el.count -= 1
-				}
+			this.productCards.forEach(el => {
+				el.id == cardID && el.count > 1 ? el.count -= 1 : false
 			})
 		},
 
 		addInBasket(cardID){
-      		this.productCards.forEach((el) => {
+      		this.productCards.forEach(el => {
 				if(el.id === cardID){
-					let cardForBasket = {
-						id: el.id,
-						title: el.title,
-						count: el.count,
-						weight: el.weight,
-						price: el.price,
-						img: el.img
-					}
-					this.$emit('addInBasket', cardForBasket)
+					this.$emit('addInBasket', { ...el})
 					el.count = 1
 				}
-				
       		})
     	},
 	}

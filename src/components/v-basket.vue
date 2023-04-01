@@ -1,10 +1,16 @@
 <template>
   	<div class="cart-wrapper">
-		<div v-if="this.basket.length > 0" v-for="card in basket" :key='card.id' class="cart-item" data-id="02">
+		<div 
+			v-if="this.basket.length > 0" 
+			v-for="card in basket" 
+			:key='card.id' 
+			class="cart-item" 
+			data-id="{{ card.id }}"
+		>
 			<div class="cart-item__top">
 				<div class="cart-item__img">
-					<img :src="card.img" alt="">
-				</div>
+				    <img :src="card.img" alt="">
+			  	</div>
 				<div class="cart-item__desc">
     				<div class="cart-item__title">{{ card.title }}</div>
 					<div class="cart-item__weight">6 шт. / {{ card.weight }}г.</div>
@@ -43,20 +49,16 @@ export default {
 		basketIncreaseCounter(cardID){
 			this.basket.forEach((el) => {
 				if(el.id == cardID ){ 
-					el.count += 1
+					el.count++ 
 					this.$emit('priceCalc', el.price, '+')
 				}
 			})
 		},
 
 		basketReduceCounter(cardID){
-			this.basket.forEach((el) => {
+			this.basket.forEach(el => {
 				if(el.id == cardID ){
-					if(el.count >1 ){
-						el.count -=1
-					} else {
-						this.basket.splice(this.basket.findIndex(a => a.id === cardID), 1)
-					}
+					el.count >1 ? el.count -=1 : this.basket.splice(this.basket.findIndex(elem => elem.id === cardID), 1)
 					this.$emit('priceCalc', el.price)
 				}		
 			})	
